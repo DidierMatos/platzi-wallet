@@ -1,4 +1,4 @@
-package com.cristianvillamil.platziwallet.ui.home
+package com.cristianvillamil.platziwallet.ui.home.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,14 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cristianvillamil.platziwallet.R
+import com.cristianvillamil.platziwallet.ui.home.FavoriteTransfer
+import com.cristianvillamil.platziwallet.ui.home.HomeContract
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeContract.View {
 
-    private val favoriteTransferAdapter = FavoriteTransferAdapter()
+    private val favoriteTransferAdapter = FavoriteTransferAdapter() //Adaptador del RV y se encarga de renderizar cada uno de los elementos que tenemos de los favoriteTransfers
 
-    override fun onCreateView(
+    override fun onCreateView( //Xml que renderiza la vista
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,7 +29,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
-        circularProgress.setProgressWithAnimation(
+        circularProgress.setProgressWithAnimation( //Donde se muestra el progreso que se tiene y carga la imagen
             70f,
             1000,
             AccelerateDecelerateInterpolator(),
@@ -41,10 +43,10 @@ class HomeFragment : Fragment() {
 
     private fun initRecyclerView() {
         favoriteTransfersRecyclerView.layoutManager =
-            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        favoriteTransfersRecyclerView.adapter = favoriteTransferAdapter
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false) //Cuando se inicia el RV se coloca esto
+        favoriteTransfersRecyclerView.adapter = favoriteTransferAdapter  //seteamos el adaptador
         val items = ArrayList<FavoriteTransfer>()
-        items.add(
+        items.add(   //Creando la data del modelo que se mostrará
             FavoriteTransfer(
                 1,
                 "Freddy Vega",
@@ -90,7 +92,19 @@ class HomeFragment : Fragment() {
             )
         )
 
-        favoriteTransferAdapter.setData(items)
+        favoriteTransferAdapter.setData(items) //Seteando la data
 
+    }
+
+    override fun showLoader() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideLoader() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showFavoritTransfers(favoriteTransfer: List<FavoriteTransfer>) {
+        TODO("Not yet implemented")
     }
 }
