@@ -1,5 +1,6 @@
 package com.cristianvillamil.platziwallet.ui.home.data
 
+import android.os.Handler
 import com.cristianvillamil.platziwallet.ui.home.FavoriteTransfer
 import com.cristianvillamil.platziwallet.ui.home.HomeContract
 
@@ -55,6 +56,11 @@ class HomeInteractor { //Se encarga de la comunicación en la capa de red o en e
             )
         )
 
-        responseCallback.onResponse(items)
+        val runnable = Runnable {
+            responseCallback.onResponse(items)
+        }
+        val handler = Handler()
+        handler.postDelayed(runnable, 3000)
+
     }
 }
