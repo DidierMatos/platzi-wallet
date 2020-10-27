@@ -9,6 +9,10 @@ interface HomeContract {
     }
 
     interface Presenter {
-    fun retrieveFavoriteTransfers() : List<FavoriteTransfer> // Trae la lista de las transferencias favoritas
+        fun retrieveFavoriteTransfers()// Trae la lista de las transferencias favoritas
+    }
+
+    interface OnResponseCallback{
+        fun onResponse(favoriteList : List<FavoriteTransfer>)
     }
 }

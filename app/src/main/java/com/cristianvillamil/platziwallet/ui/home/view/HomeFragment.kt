@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cristianvillamil.platziwallet.R
 import com.cristianvillamil.platziwallet.ui.home.FavoriteTransfer
 import com.cristianvillamil.platziwallet.ui.home.HomeContract
+import com.cristianvillamil.platziwallet.ui.home.presenter.HomePresenter
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(), HomeContract.View {
 
     private val favoriteTransferAdapter = FavoriteTransferAdapter() //Adaptador del RV y se encarga de renderizar cada uno de los elementos que tenemos de los favoriteTransfers
+    private var homePresenter:HomeContract.Presenter? = null//Instancia en Java se colocaba New pero en Kotlin no es necesario
 
     override fun onCreateView( //Xml que renderiza la vista
         inflater: LayoutInflater,
@@ -29,6 +31,8 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        homePresenter = HomePresenter(this)
+        homePresenter?.retrieveFavoriteTransfers() // Si es nulo no llama a la funcion, esto comunica 2 capas
         circularProgress.setProgressWithAnimation( //Donde se muestra el progreso que se tiene y carga la imagen
             70f,
             1000,
@@ -45,54 +49,9 @@ class HomeFragment : Fragment(), HomeContract.View {
         favoriteTransfersRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false) //Cuando se inicia el RV se coloca esto
         favoriteTransfersRecyclerView.adapter = favoriteTransferAdapter  //seteamos el adaptador
-        val items = ArrayList<FavoriteTransfer>()
-        items.add(   //Creando la data del modelo que se mostrará
-            FavoriteTransfer(
-                1,
-                "Freddy Vega",
-                456.000,
-                "Hace 2h",
-                "https://media.licdn.com/dms/image/C4E03AQGlqpsnWjB6Yg/profile-displayphoto-shrink_200_200/0?e=1582761600&v=beta&t=dYj3_HcoKdR66KpEup0FPBTziu8xiF2I2snqJbf4DGM"
-            )
-        )
-        items.add(
-            FavoriteTransfer(
-                1,
-                "Nestor Villamil",
-                210.900,
-                "Ayer",
-                "https://krausefx.com/assets/posts/profilePictures/FelixKrause2016.jpg"
-            )
-        )
-        items.add(
-            FavoriteTransfer(
-                1,
-                "Fernando Ávila",
-                456.000,
-                "Hace 2h",
-                "https://www.oliverwyman.com/content/dam/oliver-wyman/v2/careers/profiles/scottbk-profile-460x460.jpg"
-            )
-        )
-        items.add(
-            FavoriteTransfer(
-                1,
-                "Cristian Villamil",
-                456.000,
-                "Hace 2h",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTw8mKnjVErhmhl5S_aUZfvf86vwZOMJBqbUqM-guT-kv6K4xu&s"
-            )
-        )
-        items.add(
-            FavoriteTransfer(
-                1,
-                "Cristian Villamil",
-                456.000,
-                "Hace 2h",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVSEHZQ2HJu9FEzFLU4yEAUv46sfRQjxUYkiVv7IEFxNndQ_7C&s"
-            )
-        )
 
-        favoriteTransferAdapter.setData(items) //Seteando la data
+
+
 
     }
 
@@ -105,6 +64,6 @@ class HomeFragment : Fragment(), HomeContract.View {
     }
 
     override fun showFavoritTransfers(favoriteTransfer: List<FavoriteTransfer>) {
-        TODO("Not yet implemented")
+        favoriteTransferAdapter.setData(favoriteTransfer) //Seteando la data pero la vista solo se encarga de renderizar con 1 sola responsabilidad
     }
 }
